@@ -7,18 +7,19 @@
 [NeuralMMO](https://github.com/NeuralMMO/environment)
 1. python 
 2. A Massively Multiagent Environment for Artificial Intelligence Research
-3. how to start?
+3. start: install done, start 'Minimal Example'
 
 
 [nocturne](https://github.com/facebookresearch/nocturne)
 1. python, c++
-2. 优化 waymo 公开数据集
+2. 优化 waymo 挑战赛；waymo 挑战赛都是小任务：1）给1s轨迹，预计8s后的位置。2）给1s数据，预测8s内观测到的数据，去除遮挡部分。3,4）3D相关
 3. 项目有点重，场景比较复杂，包含视觉遮挡效果
 
 
 [CityFlow](https://github.com/cityflow-project/CityFlow/)
 1. c++, pyton
 2. 2019 CityFlow: A Multi-Agent Reinforcement Learning Environment for Large Scale City Traffic Scenario
+3. lastest github commit was 2020 Dec
 
 
 [open_spiel](https://github.com/deepmind/open_spiel)
