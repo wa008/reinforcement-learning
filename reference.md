@@ -7,7 +7,7 @@
 [NeuralMMO](https://github.com/NeuralMMO/environment)
 1. python 
 2. A Massively Multiagent Environment for Artificial Intelligence Research
-3. start: install done, start 'Minimal Example'
+3. start: install done, start 'Minimal Example', don't know how to use client to display picture
 
 
 [nocturne](https://github.com/facebookresearch/nocturne)
