@@ -19,3 +19,9 @@ target: reach the destination in the shortest time
 
 other idea
 1. design maze suing RL
+
+
+todo
+1. RL+自动驾驶 的大框架；基于mofan大佬的代码修改，action的选择添加阻碍项；https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents/2_Q_Learning_maze
+2. 可视化
+3. 添加行人、红绿灯
