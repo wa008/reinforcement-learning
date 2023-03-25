@@ -22,8 +22,12 @@ other idea
 
 
 todo
-1. RL+自动驾驶 的大框架；基于mofan大佬的代码修改，action的选择添加阻碍项；https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents/2_Q_Learning_maze
-2. 提前模拟出结果，才能判定是否撞车
-3. 可视化
+1. RL大框架。done
+2. 可视化。done
+3. 多辆车；提前模拟出结果，才能判定是否撞车
 4. 添加行人、红绿灯
 5. 怎么定义汽车看到的内容：输入是，近距离范围内的车位置、速度等状态；进行模拟，看n秒后的状态是否有危险，选择最好的action
+
+
+参考
+1. mofan大佬的RL框架；https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents/2_Q_Learning_maze
