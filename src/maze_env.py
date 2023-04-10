@@ -11,7 +11,7 @@ else:
 MAZE_LEN = 500
 CNT = 20
 UNIT = MAZE_LEN // CNT
-cars_cnt = 1
+cars_cnt = 5
 colors = {
     'stone': 'black',
     'space': 'white',
@@ -39,6 +39,7 @@ class Maze(tk.Tk, object):
         self.block_prob = 0.2
         self.maps = [['' for x in range(CNT)] for y in range(CNT)]
         self.cars = [car() for i in range(cars_cnt)]
+        self.cars_set = set()
 
     def _build_maze(self):
         for i in range(CNT):
@@ -56,31 +57,31 @@ class Maze(tk.Tk, object):
     def _build_cars(self):
         for ind in range(len(self.cars)):
             self.cars[ind].now_x, self.cars[ind].now_y = self._get_space_point()
-            while True:
-                x, y = self._get_space_point()
-                if x != self.cars[ind].now_x or y != self.cars[ind].now_y:
-                    self.cars[ind].target_x = x
-                    self.cars[ind].target_y = y
-                    break
+            self.cars[ind].target_x, self.cars[ind].target_y = self._get_space_point()
 
     def _color_car_and_destination(self):
-        print ('car\t', self.cars[0].now_y, self.cars[0].now_x)
-        label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors['car'])
-        label_frame.place(x = self.cars[0].now_y * UNIT, y = self.cars[0].now_x * UNIT)
+        for car in self.cars:
+            label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors['car'])
+            label_frame.place(x = car.now_y * UNIT, y = car.now_x * UNIT)
 
-        print ('destination\t', self.cars[0].target_y, self.cars[0].target_x)
-        label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors['destination'])
-        label_frame.place(x = self.cars[0].target_y * UNIT, y = self.cars[0].target_x * UNIT)
+            label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors['destination'])
+            label_frame.place(x = car.target_y * UNIT, y = car.target_x * UNIT)
     
     def _get_space_point(self):
         while True:
             x = random.randint(0, CNT)
             y = random.randint(0, CNT)
             try:
-                if self.maps[x][y] == 'space': 
+                if self.maps[x][y] == 'space' and (x, y) not in self.cars_set:
+                    self.cars_set.add((x, y))
                     return x, y
             except:
                 print ('error', x, y)
+    
+    def _get_observation(self, ind):
+        point = [self.cars[ind].now_x, self.cars[ind].now_y, self.cars[ind].target_x, self.cars[ind].target_y]
+        observation = "_".join([str(x) for x in point])
+        return observation
 
     def reset(self):
         self.update()
@@ -88,7 +89,6 @@ class Maze(tk.Tk, object):
         self._build_maze()
         self._build_cars()
         self._color_car_and_destination()
-        return (self.cars[0].now_x, self.cars[0].now_y, self.cars[0].target_x, self.cars[0].target_y)
 
     def next_point(self, action, x, y):
         if action == 'up':   # up
@@ -112,7 +112,18 @@ class Maze(tk.Tk, object):
         else:
             return False
 
+    def check_is_sucess(self, ind):
+        if self.cars[ind].now_x == self.cars[ind].target_x and self.cars[ind].now_y == self.cars[ind].target_y:
+            return True
+        else:
+            return False
+
     def step(self, ind, action):
+        if self.check_is_sucess(ind):
+            reward = 10
+            done = True
+            s_ = 'terminal'
+            return s_, reward, done
         action = self.action_space[int(action)]
         label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors['space'])
         label_frame.place(x = self.cars[ind].now_y * UNIT, y = self.cars[ind].now_x * UNIT)
@@ -122,7 +133,7 @@ class Maze(tk.Tk, object):
         label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors['car'])
         label_frame.place(x = self.cars[ind].now_y * UNIT, y = self.cars[ind].now_x * UNIT)
 
-        if self.cars[ind].now_x == self.cars[ind].target_x and self.cars[ind].now_y == self.cars[ind].target_y:
+        if self.check_is_sucess(ind):
             reward = 10
             done = True
             s_ = 'terminal'

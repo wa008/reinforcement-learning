@@ -26,7 +26,7 @@ class QLearningTable:
             # choose best action
             state_action = self.q_table.loc[observation, :]
             distance_action = [0 for i in range(len(self.action_space))]
-            x, y, nx, ny =[int(val) for val in observation.split("_")]
+            x, y, nx, ny = [int(val) for val in observation.split("_")]
             if x < nx:
                 distance_action[self.action2index['up']] -= 1
                 distance_action[self.action2index['down']] += 1

@@ -13,30 +13,34 @@ def update():
         # initial observation
         # random.seed(2023)
         random.seed(int(datetime.now().timestamp() * 1000))
-        point = env.reset()
-        observation = "_".join([str(x) for x in point])
-        car_ind = 0
+        env.reset()
         retry_cnt = 0
+        max_try = 10
 
         while True:
+            done_cnt = 0
             retry_cnt += 1
             # fresh env
             env.render()
-            # RL choose action based on observation
-            action = RL.choose_action(str(observation))
-            if env.check_action_is_valid(car_ind, action) == False:
-                continue
-            # RL take action and get next observation and reward
-            observation_, reward, done = env.step(car_ind, action)
+            for car_ind in range(len(env.cars)):
+                observation = env._get_observation(car_ind)
+                for i in range(max_try):
+                    # RL choose action based on observation
+                    action = RL.choose_action(str(observation))
+                    if env.check_action_is_valid(car_ind, action) == False:
+                        continue
+                    # RL take action and get next observation and reward
+                    observation_, reward, done = env.step(car_ind, action)
 
-            # RL learn from this transition
-            RL.learn(str(observation), action, reward, str(observation_))
+                    # RL learn from this transition
+                    RL.learn(str(observation), action, reward, str(observation_))
 
-            # swap observation
-            observation = observation_
-
+                    # swap observation
+                    observation = observation_
+                    done_cnt += int(done)
+                    break
             # break while loop when end of this episode
-            if done:
+            if done_cnt == len(env.cars):
                 break
         print ("episode: {}\tretry_cnt: {}\ttime: {}".format(episode, retry_cnt, datetime.now() - begin_time))
         RL.q_table = RL.q_table.head(1)
