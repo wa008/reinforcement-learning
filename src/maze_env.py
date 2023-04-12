@@ -6,12 +6,13 @@ if sys.version_info.major == 2:
     import Tkinter as tk
 else:
     import tkinter as tk
+import copy
 
 
 MAZE_LEN = 500
 CNT = 20
 UNIT = MAZE_LEN // CNT
-cars_cnt = 5
+cars_cnt = 2
 colors = {
     'stone': 'black',
     'space': 'white',
@@ -32,7 +33,7 @@ class car():
 class Maze(tk.Tk, object):
     def __init__(self):
         super(Maze, self).__init__()
-        self.action_space = ['left', 'right', 'up', 'down']
+        self.action_space = ['left', 'right', 'up', 'down', 'stay']
         self.n_actions = len(self.action_space)
         self.title('maze')
         self.geometry('{0}x{1}'.format(MAZE_LEN, MAZE_LEN))
@@ -99,10 +100,26 @@ class Maze(tk.Tk, object):
             y -= 1 
         elif action == 'right':   # right
             y += 1
+        elif action == 'stay':
+            pass 
         else:
             print ('error: action={} is invalid'.format(action), type(action))
         return (x, y)
     
+    def all_action_is_valid(self, action_list):
+        cars = copy.deepcopy(self.cars)
+        cars_set = set()
+        for ind in range(len(self.cars)):
+            # RL take action and get next observation and reward
+            action = action_list[ind]
+            action = self.action_space[int(action)]
+            cars[ind].now_x, cars[ind].now_y = self.next_point(action, cars[ind].now_x, cars[ind].now_y)
+            if (cars[ind].now_x, cars[ind].now_y) in cars_set:
+                return False
+            else:
+                cars_set.add((cars[ind].now_x, cars[ind].now_y))
+        return True
+
     def check_action_is_valid(self, ind, action):
         action = self.action_space[int(action)]
         new_x, new_y = self.next_point(action, self.cars[ind].now_x, self.cars[ind].now_y)
@@ -140,7 +157,7 @@ class Maze(tk.Tk, object):
         else:
             reward = -2
             done = False
-            now_point = (self.cars[0].now_x, self.cars[0].now_y, self.cars[0].target_x, self.cars[0].target_y)
+            now_point = (self.cars[ind].now_x, self.cars[ind].now_y, self.cars[ind].target_x, self.cars[ind].target_y)
             s_ = "_".join([str(x) for x in now_point])
 
         return s_, reward, done

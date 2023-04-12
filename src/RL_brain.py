@@ -9,7 +9,7 @@ class QLearningTable:
         self.lr = learning_rate
         self.gamma = reward_decay
         self.epsilon = e_greedy
-        self.action_space = ['left', 'right', 'up', 'down']
+        self.action_space = ['left', 'right', 'up', 'down', 'stay']
         self.action2index = {}
         for index, action in enumerate(self.action_space):
             self.action2index[action] = index
@@ -42,6 +42,8 @@ class QLearningTable:
             final_score = state_action + np.array(distance_action)
             # some actions may have the same value, randomly choose on in these actions
             action = np.random.choice(final_score[final_score == np.max(final_score)].index)
+            if observation == '17_0_19_6':
+                print ('observation', observation, action, '\n', final_score, '\n')
         else:
             # choose random action
             action = np.random.choice(self.actions)

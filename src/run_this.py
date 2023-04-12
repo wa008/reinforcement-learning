@@ -12,23 +12,37 @@ def update():
         begin_time = datetime.now()
         # initial observation
         # random.seed(2023)
-        random.seed(int(datetime.now().timestamp() * 1000))
+        random_seed = int(datetime.now().timestamp() * 1000)
+        print ('random_seed: {}'.format(random_seed))
+        random_seed = 1681277371833
+        random.seed(random_seed)
         env.reset()
         retry_cnt = 0
-        max_try = 10
+        max_try = 100
 
         while True:
             done_cnt = 0
             retry_cnt += 1
             # fresh env
             env.render()
-            for car_ind in range(len(env.cars)):
-                observation = env._get_observation(car_ind)
-                for i in range(max_try):
-                    # RL choose action based on observation
-                    action = RL.choose_action(str(observation))
-                    if env.check_action_is_valid(car_ind, action) == False:
-                        continue
+            for i in range(max_try):
+                action_list = []
+                for car_ind in range(len(env.cars)):
+                    observation = env._get_observation(car_ind)
+                    while True:
+                        # RL choose action based on observation
+                        action = RL.choose_action(str(observation))
+                        if env.check_action_is_valid(car_ind, action) == True:
+                            if observation == '17_0_19_6':
+                                print ('\n\n', action, '\n\n')
+                            break
+                    action_list.append(action)
+                # check all aciton is valid
+                if not env.all_action_is_valid(action_list):
+                    continue 
+
+                for car_ind in range(len(env.cars)):
+                    action = action_list[car_ind]
                     # RL take action and get next observation and reward
                     observation_, reward, done = env.step(car_ind, action)
 
@@ -38,7 +52,7 @@ def update():
                     # swap observation
                     observation = observation_
                     done_cnt += int(done)
-                    break
+                break
             # break while loop when end of this episode
             if done_cnt == len(env.cars):
                 break
