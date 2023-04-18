@@ -4,7 +4,7 @@ import random
 import os
 
 class QLearningTable:
-    def __init__(self, actions, learning_rate=0.01, reward_decay=0.9, e_greedy=0.9, pre_train_file = ''):
+    def __init__(self, actions, learning_rate=0.1, reward_decay=0.9, e_greedy=0.9, pre_train_file = ''):
         self.actions = actions  # a list
         self.lr = learning_rate
         self.gamma = reward_decay
@@ -42,8 +42,6 @@ class QLearningTable:
             final_score = state_action + np.array(distance_action)
             # some actions may have the same value, randomly choose on in these actions
             action = np.random.choice(final_score[final_score == np.max(final_score)].index)
-            if observation == '17_0_19_6':
-                print ('observation', observation, action, '\n', final_score, '\n')
         else:
             # choose random action
             action = np.random.choice(self.actions)

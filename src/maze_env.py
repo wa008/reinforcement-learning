@@ -12,7 +12,7 @@ import copy
 MAZE_LEN = 500
 CNT = 20
 UNIT = MAZE_LEN // CNT
-cars_cnt = 2
+cars_cnt = 10
 colors = {
     'stone': 'black',
     'space': 'white',
@@ -42,19 +42,34 @@ class Maze(tk.Tk, object):
         self.cars = [car() for i in range(cars_cnt)]
         self.cars_set = set()
 
+    def _build_maze_space_row(self, ind):
+        for j in range(CNT):
+            self.maps[ind][j] = 'space'
+            
+    def _build_maze_space_col(self, ind):
+        for i in range(CNT):
+            self.maps[i][ind] = 'space'
+            
     def _build_maze(self):
         for i in range(CNT):
             for j in range(CNT):
-                val = ''
-                if random.random() < self.block_prob:
-                    label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors['stone'])
-                    val = 'stone'
-                else:
-                    label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors['space'])
-                    val = 'space'
-                label_frame.place(x = MAZE_LEN / CNT * i, y = MAZE_LEN / CNT * j)
-                self.maps[j][i] = val
+                self.maps[i][j] = 'stone'
+        
+        base_row = 0
+        while base_row < CNT:
+            self._build_maze_space_row(base_row)
+            base_row += random.randint(3, 5)
     
+        base_col = 0
+        while base_col < CNT:
+            self._build_maze_space_col(base_col)
+            base_col += random.randint(3, 5)
+
+        for i in range(CNT):
+            for j in range(CNT):
+                label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors[self.maps[j][i]])
+                label_frame.place(x = MAZE_LEN / CNT * i, y = MAZE_LEN / CNT * j)
+                
     def _build_cars(self):
         for ind in range(len(self.cars)):
             self.cars[ind].now_x, self.cars[ind].now_y = self._get_space_point()
@@ -128,6 +143,9 @@ class Maze(tk.Tk, object):
             return True
         else:
             return False
+
+    def debug_cars(self, ind):
+        print ('cars: {}\t{}\t{}\t{}\n'.format(self.cars[ind].now_x, self.cars[ind].now_y, self.cars[ind].target_x, self.cars[ind].target_y))
 
     def check_is_sucess(self, ind):
         if self.cars[ind].now_x == self.cars[ind].target_x and self.cars[ind].now_y == self.cars[ind].target_y:
