@@ -12,12 +12,13 @@ import copy
 MAZE_LEN = 500
 CNT = 20
 UNIT = MAZE_LEN // CNT
-cars_cnt = 10
+cars_cnt = 5
 colors = {
     'stone': 'black',
     'space': 'white',
     'car': 'red',
-    'destination': 'green'
+    'destination': 'yellow',
+    'done': 'green'
 }
 
 class car():
@@ -74,6 +75,7 @@ class Maze(tk.Tk, object):
         for ind in range(len(self.cars)):
             self.cars[ind].now_x, self.cars[ind].now_y = self._get_space_point()
             self.cars[ind].target_x, self.cars[ind].target_y = self._get_space_point()
+            self.maps[self.cars[ind].target_x][self.cars[ind].target_y] = 'destination'
 
     def _color_car_and_destination(self):
         for car in self.cars:
@@ -85,8 +87,8 @@ class Maze(tk.Tk, object):
     
     def _get_space_point(self):
         while True:
-            x = random.randint(0, CNT)
-            y = random.randint(0, CNT)
+            x = random.randint(0, CNT - 1)
+            y = random.randint(0, CNT - 1)
             try:
                 if self.maps[x][y] == 'space' and (x, y) not in self.cars_set:
                     self.cars_set.add((x, y))
@@ -139,7 +141,7 @@ class Maze(tk.Tk, object):
         action = self.action_space[int(action)]
         new_x, new_y = self.next_point(action, self.cars[ind].now_x, self.cars[ind].now_y)
         if new_x >= 0 and new_x < CNT and new_y >= 0 and new_y < CNT \
-                and self.maps[new_x][new_y] != 'stone':
+                and self.maps[new_x][new_y] in ('space', 'destination'):
             return True
         else:
             return False
@@ -160,7 +162,8 @@ class Maze(tk.Tk, object):
             s_ = 'terminal'
             return s_, reward, done
         action = self.action_space[int(action)]
-        label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors['space'])
+        color = colors[self.maps[self.cars[ind].now_x][self.cars[ind].now_y]]
+        label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = color)
         label_frame.place(x = self.cars[ind].now_y * UNIT, y = self.cars[ind].now_x * UNIT)
         new_x, new_y = self.next_point(action, self.cars[ind].now_x, self.cars[ind].now_y)
 
@@ -172,6 +175,9 @@ class Maze(tk.Tk, object):
             reward = 10
             done = True
             s_ = 'terminal'
+            self.maps[self.cars[ind].now_x][self.cars[ind].now_y] = 'done'
+            label_frame = tk.Frame(self, width = UNIT, height = UNIT, bg = colors['done'])
+            label_frame.place(x = self.cars[ind].now_y * UNIT, y = self.cars[ind].now_x * UNIT)
         else:
             reward = -2
             done = False
