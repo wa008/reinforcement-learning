@@ -3,7 +3,7 @@ Simulate a simplest traffic systems and use basic reinforcement learning techniq
 
 Example:
 
-<video src="/video/display_demo.mp4" width="180">
+<video src="/video/display_demo.mp4" width=180/>
 
 How to run
 
