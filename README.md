@@ -5,7 +5,7 @@ Example:
 
 <br>
 <hr />
-https://github.com/wa008/reinforcement-learning/blob/main/video/display_demo.mp4?raw=true&width=200&height=200
+https://raw.githubusercontent.com/wa008/reinforcement-learning/main/video/display_demo.mp4?raw=true&width=200&height=200
 
 <!-- <p align="center">
   <a href="https://youtu.be/3-ikI6ZxBZA" target="_blank"><img src="internals/img/subtitler-intro-imgur.gif"></a>
