@@ -17,4 +17,4 @@ python3 src/run_this.py
 
 Problem: tkinter can't support maps that have more than 20 row and columns in my person machine(Mac M1 mini), I don't know how to display bigger maps that have more rows and columns
 
-I'm very grateful that if you have some suggestion, email: hzp1024@qq.com
+I'm very grateful that if you have some suggestion.
