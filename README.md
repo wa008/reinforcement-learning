@@ -4,7 +4,7 @@ Simulate a simplest traffic systems and use basic reinforcement learning techniq
 Example:
 
 <video width="320" height="240" controls>
-    <source src="/video/display_demo.mov" type="video/mp4">
+    <source src="/video/display_demo.mp4" type="video/mp4">
 </video>
 
 How to run
