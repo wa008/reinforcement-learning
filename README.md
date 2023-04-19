@@ -6,11 +6,6 @@ Example:
 <br>
 <hr />
 https://user-images.githubusercontent.com/29834520/232978755-0cd6ca97-4fd4-4051-ac0d-60eaa9450f5d.mp4?width=200&height=200
-
-<!-- <p align="center">
-  <a href="https://youtu.be/3-ikI6ZxBZA" target="_blank"><img src="internals/img/subtitler-intro-imgur.gif"></a>
-</p> -->
-
 <hr />
 <br />
 
