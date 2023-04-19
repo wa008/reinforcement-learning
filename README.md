@@ -3,11 +3,8 @@ Simulate a simplest traffic systems and use basic reinforcement learning techniq
 
 Example:
 
-<br>
-<hr />
-https://user-images.githubusercontent.com/29834520/232978755-0cd6ca97-4fd4-4051-ac0d-60eaa9450f5d.mp4?width=200&height=200
-<hr />
-<br />
+
+https://user-images.githubusercontent.com/29834520/232979083-2706dddb-43e2-41fd-ab37-ade04a40b127.mp4
 
 
 How to run
